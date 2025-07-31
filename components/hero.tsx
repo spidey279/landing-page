@@ -1,7 +1,23 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import { useState, useEffect } from "react";
 
 export const Hero = () => {
+  const [displayText, setDisplayText] = useState("");
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const fullText = "Edits Made Easy";
+  const typingSpeed = 100; // milliseconds per character
+
+  useEffect(() => {
+    if (currentIndex < fullText.length) {
+      const timeout = setTimeout(() => {
+        setDisplayText(prev => prev + fullText[currentIndex]);
+        setCurrentIndex(prev => prev + 1);
+      }, typingSpeed);
+      return () => clearTimeout(timeout);
+    }
+  }, [currentIndex, fullText]);
+
   return (
     <div className="pt-20 ">
       <div className="text-center px-8">
@@ -23,9 +39,10 @@ export const Hero = () => {
         </div>
         <h1
           data-aos="fade-down"
-          className="pb-4 font-extrabold tracking-tight text-transparent text-7xl lg:text-8xl bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-600 to-cyan-500 "
+          className="pb-4 font-extrabold tracking-tight text-transparent text-7xl lg:text-8xl bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-600 to-cyan-500 min-h-[1.2em]"
         >
-          Edits Made Easy
+          {displayText}
+          <span className="animate-pulse text-cyan-400">|</span>
         </h1>
         <p
           data-aos="fade-down"
